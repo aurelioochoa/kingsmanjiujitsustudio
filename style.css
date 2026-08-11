@@ -484,10 +484,13 @@ html[data-theme="b"] .dev-toggle button.on{color:#fff}
 /* responsive for carousel + videos */
 @media (max-width:980px){
   .c-slide{width:200px}
+  .carousel{-webkit-mask-image:none;mask-image:none}
+  .carousel-track{scroll-snap-type:x mandatory;padding-inline:calc((100vw - 200px)/2)}
   .videos{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:640px){
   .c-slide{width:64vw}
+  .carousel-track{padding-inline:calc((100vw - 64vw)/2)}
   .videos{grid-template-columns:1fr}
   .video-card video{height:300px}
   .dev-toggle{left:10px;bottom:10px}
