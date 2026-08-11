@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "maeda",
+    "title": "File:Mitsuyo Maeda 1922.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mitsuyo_Maeda_1922.jpg",
+    "artist": "Unknown author&lt;span style=\"display: none;\">Unknown author&lt;/span>",
+    "license": "Public domain",
+    "bytes": 5472
+  },
+  {
+    "slug": "maeda2",
+    "title": "File:Mitsuyo Maeda.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mitsuyo_Maeda.jpg",
+    "artist": "published by 島津書房",
+    "license": "Public domain",
+    "bytes": 20526
+  },
+  {
+    "slug": "carlos",
+    "title": "File:Carlos Gracie (1951).tif",
+    "source": "https://commons.wikimedia.org/wiki/File:Carlos_Gracie_(1951).tif",
+    "artist": "&lt;div class=\"fn value\">\nUnknown&lt;span style=\"display: none;\">Unknown &lt;/span>&lt;/div>",
+    "license": "Public domain",
+    "bytes": 104797
+  },
+  {
+    "slug": "helio",
+    "title": "File:Hélio Gracie (1932).tif",
+    "source": "https://commons.wikimedia.org/wiki/File:H%C3%A9lio_Gracie_(1932).tif",
+    "artist": "&lt;div class=\"fn value\">\nUnknown&lt;span style=\"display: none;\">Unknown &lt;/span>&lt;/div>",
+    "license": "Public domain",
+    "bytes": 137800
+  },
+  {
+    "slug": "helio2",
+    "title": "File:Helio Gracie.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Helio_Gracie.jpg",
+    "artist": "Helio Gracie",
+    "license": "CC0",
+    "bytes": 86178
+  }
+]

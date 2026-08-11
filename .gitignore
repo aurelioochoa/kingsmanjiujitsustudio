@@ -1,0 +1,12 @@
+# Datos scrapeados de Instagram (no publicar)
+dataset_*.json
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Node / build leftovers
+node_modules/
