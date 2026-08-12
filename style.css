@@ -291,6 +291,15 @@ ul,ol{margin:0;padding:0;list-style:none}
 .g-item::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(8,8,10,.72));pointer-events:none}
 .gallery-cta{text-align:center;margin-top:34px}
 
+/* ---------- Chile section ---------- */
+.chile-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;align-items:center}
+.chile-media{display:grid;grid-template-columns:1fr;gap:12px}
+.chile-media img{width:100%;height:180px;object-fit:cover;border-radius:var(--radius)}
+.chile-col video{width:100%;height:372px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border)}
+.chile-col h3{font-family:var(--font-display);font-size:1.6rem;margin:0 0 8px}
+.chile-col .kicker{color:var(--gold);margin-bottom:12px}
+.chile-col p{color:var(--muted);margin-bottom:20px}
+
 /* ---------- Where / map ---------- */
 .where{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:stretch}
 .map{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow);min-height:340px}
