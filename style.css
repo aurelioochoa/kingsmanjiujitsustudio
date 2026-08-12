@@ -328,7 +328,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .carousel-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;
   scrollbar-width:none;-ms-overflow-style:none;padding:8px 4px 18px;scroll-behavior:smooth}
 .carousel-track::-webkit-scrollbar{display:none}
-.c-slide{flex:0 0 auto;width:214px;scroll-snap-align:center}
+.c-slide{flex:0 0 auto;width:214px;scroll-snap-align:center;margin:0}
 .c-spacer{flex:0 0 auto;flex-basis:calc((100vw - 214px)/2)}
 .c-media{position:relative;height:258px;border-radius:var(--radius);overflow:hidden;
   border:1px solid var(--border);background:linear-gradient(160deg,#191920,#0c0c10);

@@ -146,24 +146,29 @@
     var prev = root.querySelector(".car-arrow.prev");
     var next = root.querySelector(".car-arrow.next");
     if (!track) return;
+    // leading + trailing spacers center the first and last slide (scrollLeft 0 = slide 1 centered)
+    var spacer = document.createElement("span");
+    spacer.className = "c-spacer";
+    spacer.setAttribute("aria-hidden", "true");
+    track.insertBefore(spacer, track.firstChild);
+    track.appendChild(spacer.cloneNode());
     var slides = Array.prototype.slice.call(track.children).filter(function (el) {
       return !el.classList.contains("c-spacer");
     });
     var GAP = 18;
-    var step = 0, timer = null, paused = false, idx = 0;
-    var slideW = 0, centOff = 0, centered = false;
+    var step = 0, timer = null, paused = false, idx = 0, S0 = 0;
 
+    // S0 = scrollLeft that centers the first slide (absorbs track padding + leading spacer)
     function measure() {
       if (!slides.length) return;
-      slideW = slides[0].offsetWidth;
-      step = slideW + GAP;
-      centered = true;
-      centOff = Math.max(0, (track.clientWidth - slideW) / 2);
+      var sw = slides[0].offsetWidth;
+      step = sw + GAP;
+      S0 = Math.max(0, slides[0].offsetLeft + sw / 2 - track.clientWidth / 2);
     }
     function goTo(i) {
       var max = slides.length - 1;
       idx = Math.max(0, Math.min(max, i));
-      track.scrollTo({ left: Math.max(0, idx * step - centOff), behavior: reduceMotion ? "auto" : "smooth" });
+      track.scrollTo({ left: S0 + idx * step, behavior: reduceMotion ? "auto" : "smooth" });
     }
     function setDots() {
       if (!dotsWrap) return;
@@ -173,7 +178,7 @@
     }
     function updateFromScroll() {
       if (!step) { measure(); return; }
-      var cur = Math.round((track.scrollLeft + centOff) / step);
+      var cur = Math.round((track.scrollLeft - S0) / step);
       if (cur !== idx) { idx = cur; setDots(); }
     }
     // dots
@@ -192,21 +197,41 @@
     track.addEventListener("scroll", updateFromScroll, { passive: true });
     window.addEventListener("resize", function () { measure(); setDots(); });
 
-    // autoplay — paused on hover, off under reduced motion
+    // autoplay — paused on hover, off under reduced motion; starts only when
+    // the carousel is visible (and resets to the first master on first reveal)
     if (!reduceMotion) {
+      var inView = false, started = false;
       function play() {
         clearInterval(timer);
+        if (!inView || paused || !root.offsetParent) return;
         timer = setInterval(function () {
           if (!paused) goTo(idx >= slides.length - 1 ? 0 : idx + 1);
         }, 3600);
       }
       root.addEventListener("pointerenter", function () { paused = true; });
       root.addEventListener("pointerleave", function () { paused = false; play(); });
-      play();
+      function setAuto(on) {
+        if (on) {
+          inView = true;
+          if (!started) { started = true; goTo(0); } // start at the first master
+          play();
+        } else {
+          inView = false;
+          clearInterval(timer);
+        }
+      }
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (es) {
+          es.forEach(function (e) { setAuto(e.isIntersecting); });
+        }, { threshold: 0.25 });
+        io.observe(root);
+      } else {
+        setAuto(true);
+      }
     }
 
     measure(); setDots();
-    if (centered) track.scrollLeft = centOff; // center first slide at load
+    track.scrollLeft = S0; // center first slide at load
   }
   document.querySelectorAll("[data-carousel]").forEach(initCarousel);
 
