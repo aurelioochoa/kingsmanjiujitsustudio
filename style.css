@@ -328,7 +328,8 @@ ul,ol{margin:0;padding:0;list-style:none}
 .carousel-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;
   scrollbar-width:none;-ms-overflow-style:none;padding:8px 4px 18px;scroll-behavior:smooth}
 .carousel-track::-webkit-scrollbar{display:none}
-.c-slide{flex:0 0 auto;width:214px;scroll-snap-align:start}
+.c-slide{flex:0 0 auto;width:214px;scroll-snap-align:center}
+.c-spacer{flex:0 0 auto;flex-basis:calc((100vw - 214px)/2)}
 .c-media{position:relative;height:258px;border-radius:var(--radius);overflow:hidden;
   border:1px solid var(--border);background:linear-gradient(160deg,#191920,#0c0c10);
   transition:border-color .3s,box-shadow .35s,transform .4s var(--ease-pop)}
@@ -483,14 +484,14 @@ html[data-theme="b"] .dev-toggle button.on{color:#fff}
 
 /* responsive for carousel + videos */
 @media (max-width:980px){
-  .c-slide{width:200px}
+  .c-slide{width:200px;scroll-snap-align:center}
   .carousel{-webkit-mask-image:none;mask-image:none}
-  .carousel-track{scroll-snap-type:x mandatory;padding-inline:calc((100vw - 200px)/2)}
+  .c-spacer{flex-basis:calc((100vw - 200px)/2)}
   .videos{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:640px){
   .c-slide{width:64vw}
-  .carousel-track{padding-inline:calc((100vw - 64vw)/2)}
+  .c-spacer{flex-basis:calc((100vw - 64vw)/2)}
   .videos{grid-template-columns:1fr}
   .video-card video{height:300px}
   .dev-toggle{left:10px;bottom:10px}

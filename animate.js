@@ -146,16 +146,24 @@
     var prev = root.querySelector(".car-arrow.prev");
     var next = root.querySelector(".car-arrow.next");
     if (!track) return;
-    var slides = Array.prototype.slice.call(track.children);
+    var slides = Array.prototype.slice.call(track.children).filter(function (el) {
+      return !el.classList.contains("c-spacer");
+    });
+    var GAP = 18;
     var step = 0, timer = null, paused = false, idx = 0;
+    var slideW = 0, centOff = 0, centered = false;
 
     function measure() {
-      step = slides.length ? slides[0].offsetWidth + 18 : 0;
+      if (!slides.length) return;
+      slideW = slides[0].offsetWidth;
+      step = slideW + GAP;
+      centered = true;
+      centOff = Math.max(0, (track.clientWidth - slideW) / 2);
     }
     function goTo(i) {
       var max = slides.length - 1;
       idx = Math.max(0, Math.min(max, i));
-      track.scrollTo({ left: idx * step, behavior: reduceMotion ? "auto" : "smooth" });
+      track.scrollTo({ left: Math.max(0, idx * step - centOff), behavior: reduceMotion ? "auto" : "smooth" });
     }
     function setDots() {
       if (!dotsWrap) return;
@@ -165,7 +173,7 @@
     }
     function updateFromScroll() {
       if (!step) { measure(); return; }
-      var cur = Math.round(track.scrollLeft / step);
+      var cur = Math.round((track.scrollLeft + centOff) / step);
       if (cur !== idx) { idx = cur; setDots(); }
     }
     // dots
@@ -198,6 +206,7 @@
     }
 
     measure(); setDots();
+    if (centered) track.scrollLeft = centOff; // center first slide at load
   }
   document.querySelectorAll("[data-carousel]").forEach(initCarousel);
 
