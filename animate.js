@@ -120,6 +120,21 @@
     var root = document.documentElement;
     var btns = Array.prototype.slice.call(document.querySelectorAll("[data-theme-btn]"));
     if (!btns.length) return;
+
+    // Control interno: solo en desarrollo (localhost, file://) o con ?dev.
+    // En producción tapaba contenido en móvil y dejaba a la vista un tema
+    // sin terminar.
+    var host = location.hostname;
+    var isDev = host === "localhost" || host === "127.0.0.1" || host === "" ||
+                host.endsWith(".local") || /(^|[?&])dev(=|&|$)/.test(location.search);
+    if (!isDev) {
+      var panel = document.querySelector(".dev-toggle");
+      if (panel && panel.parentNode) panel.parentNode.removeChild(panel);
+      // Sin panel no hay forma de volver: fuerza el tema A y limpia el resto.
+      root.removeAttribute("data-theme");
+      try { localStorage.removeItem("kingsman-theme"); } catch (e) {}
+      return;
+    }
     function apply(theme) {
       if (theme === "b") root.setAttribute("data-theme", "b");
       else root.removeAttribute("data-theme");

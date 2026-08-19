@@ -9,7 +9,7 @@ PY    ?= python3
 
 .DEFAULT_GOAL := help
 
-.PHONY: help serve photos check verify doctor
+.PHONY: help serve photos pages check assets verify doctor
 
 help: ## Show this help
 	@printf 'Kingsman Jiu Jitsu Studio — static one-page site.\n\nTargets:\n\n'
@@ -25,8 +25,11 @@ photos: ## (Re)download Instagram photos from the scraped profile JSON into asse
 pages: ## Regenerate the individual class pages (pages/clases/*.html)
 	$(PY) scripts/build_pages.py
 
-check: ## Verify the served site: assets 200, internal links, JSON-LD validity
+check: assets ## Verify the served site: assets 200, internal links, JSON-LD validity
 	$(PY) scripts/check.py $(BASE)
+
+assets: ## Verify asset provenance: nada de Chile puede ser material de Guayaquil
+	$(PY) scripts/check_assets.py
 
 verify: check ## Run `make serve` first, then verify the live site
 

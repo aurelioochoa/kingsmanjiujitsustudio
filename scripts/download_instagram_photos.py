@@ -21,6 +21,23 @@ HEADERS = {
 }
 
 
+def looks_like(data: bytes, dest: str) -> bool:
+    """Does the body actually carry the format the filename promises?
+
+    A CDN that 404s often answers with a perfectly large HTML error page.
+    Trusting the byte count alone once saved a 35KB "not found" page as both
+    a .jpg and an .mp4, and the site shipped it for nine commits.
+    """
+    ext = os.path.splitext(dest)[1].lower()
+    if ext in (".jpg", ".jpeg"):
+        return data[:3] == b"\xff\xd8\xff"
+    if ext == ".png":
+        return data[:8] == b"\x89PNG\r\n\x1a\n"
+    if ext == ".mp4":
+        return data[4:8] == b"ftyp"
+    return True
+
+
 def download(url: str, dest: str) -> bool:
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     if os.path.exists(dest) and os.path.getsize(dest) > 0:
@@ -29,9 +46,18 @@ def download(url: str, dest: str) -> bool:
     req = urllib.request.Request(url, headers=HEADERS)
     try:
         with urllib.request.urlopen(req, timeout=60) as r:
+            status = getattr(r, "status", 200)
+            ctype = r.headers.get("Content-Type", "")
             data = r.read()
+        if status != 200:
+            print(f"  FAIL (HTTP {status}): {dest}")
+            return False
         if len(data) < 1000:
             print(f"  FAIL (tiny body {len(data)}B): {dest}")
+            return False
+        if not looks_like(data, dest):
+            print(f"  FAIL (el cuerpo no es {os.path.splitext(dest)[1]}, "
+                  f"Content-Type: {ctype or '?'}): {dest}")
             return False
         with open(dest, "wb") as f:
             f.write(data)
